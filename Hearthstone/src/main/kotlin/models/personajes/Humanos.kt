@@ -19,7 +19,7 @@ class Humanos(
                 "Lista de items: ${super.listaOrdenada()}"
     }
 
-    override fun addItem(item: Item) {
-        super.addItem(item)
+    override fun setItem(item: Item) {
+        super.setItem(item)
     }
 }

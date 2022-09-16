@@ -40,64 +40,85 @@ class Juego(private var tablero:Matriz) {
             if (tiempo%5==0){
                 reponer()
             }
-
             --tiempo
         }while (tiempo>0 && !ganadores() && listaItems.size>0)
+        informe()
     }
 
+    private fun informe() {
+       val listaCaballeros = caballerosDeElrond.sortedBy { listaItems.size }
+  //      println(caballerosDeElrond[0].mostrarEstado())
+//        println(lista[0].mostrarEstado())
+
+        println("Informe de resultados: \n" +
+                "Equipo Caballeros de Elrond: \n" +
+                "${listaCaballeros.forEach { a ->  a.mostrarEstado()} } \n" )
 
 
-
-
-
+//        println("Informe de resultados: \n" +
+//                "Equipo Caballeros de Elrond: \n" +
+//                "${listaCaballeros.forEach { a -> println( a.mostrarEstado()) }} \n" +
+//                "Equipo Amazonas de Isengard: \n" +
+//                "${amazonasDeIsengard.sortedBy { it.listaItems.size }} \n")
+    }
 
 
     private fun reponer() {
-        TODO("Not yet implemented")
+        for (i in 0 until tamTablero){
+            for (j in 0 until tamTablero){
+                tablero.getCasilla(i,j).item ?: tablero.setCasillaItem(listaItems.desapilar(),i, j)
+            }
+        }
     }
 
     private fun turnoAmazonas() {
-        TODO("Not yet implemented")
+        val jugadorSacado= amazonasDeIsengard.desencolar()
+        val fila = (0 until tamTablero).random()
+        val columna = (0 until tamTablero).random()
+        val itemSelected = tablero.getCasilla(fila,columna).item
+        itemSelected?.let { destinado(jugadorSacado, itemSelected, fila, columna) }
+        amazonasDeIsengard.encolar(jugadorSacado)
     }
 
     private fun turnoCaballeros() {
         val jugadorSacado= caballerosDeElrond.desencolar()
         val fila = (0 until tamTablero).random()
         val columna = (0 until tamTablero).random()
-        var itemSelected = tablero.getCasilla(fila,columna).item
+        val itemSelected = tablero.getCasilla(fila,columna).item
         itemSelected?.let { destinado(jugadorSacado, itemSelected, fila, columna) }
+        caballerosDeElrond.encolar(jugadorSacado)
     }
 
     private fun destinado(jugadorSacado: Personaje, itemSelected: Item, fila: Int, columna: Int) {
         when{
-            itemSelected.tipo==ItemsEnum.COMIDA -> itemComida(jugadorSacado, fila, columna)
-            itemSelected.tipo==ItemsEnum.MATERIAL && jugadorSacado is Humanos -> itemMaterial(jugadorSacado, fila, columna)
-            itemSelected.tipo==ItemsEnum.POCION && jugadorSacado is Trasgos -> itemPocion(jugadorSacado, fila, columna)
-            itemSelected.tipo==ItemsEnum.HECHIZO && jugadorSacado is Elfos -> itemHechizo(jugadorSacado, fila, columna)
+            itemSelected.tipo==ItemsEnum.COMIDA -> itemComida(itemSelected,jugadorSacado, fila, columna)
+            itemSelected.tipo==ItemsEnum.MATERIAL && jugadorSacado is Humanos -> itemMaterial(itemSelected,jugadorSacado, fila, columna)
+            itemSelected.tipo==ItemsEnum.POCION && jugadorSacado is Trasgos -> itemPocion(itemSelected,jugadorSacado, fila, columna)
+            itemSelected.tipo==ItemsEnum.HECHIZO && jugadorSacado is Elfos -> itemHechizo(itemSelected,jugadorSacado, fila, columna)
         }
     }
 
-    private fun itemHechizo(hechizero: Elfos, fila: Int, columna: Int) {
+    private fun itemHechizo(itemSelected: Item,hechizero: Elfos, fila: Int, columna: Int) {
         hechizero.inmortalidad += 7
-        //TODO problema con el addItem
-        tablero[fila][columna].item = null
+        hechizero.setItem(itemSelected)
+        tablero.setCasillaItem(null,fila, columna)
     }
 
-    private fun itemPocion(trasgo: Trasgos, fila: Int, columna: Int) {
+    private fun itemPocion(itemSelected: Item,trasgo: Trasgos, fila: Int, columna: Int) {
         trasgo.maldad += 2
-        //TODO problema con el addItem
-        tablero[fila][columna].item = null
+        trasgo.setItem(itemSelected)
+        tablero.setCasillaItem(null,fila, columna)
     }
 
-    private fun itemMaterial(humano: Humanos, fila: Int, columna: Int) {
+    private fun itemMaterial(itemSelected: Item,humano: Humanos, fila: Int, columna: Int) {
         humano.escudo += 5
-        //TODO problema con el addItem
-        tablero[fila][columna].item = null
+        humano.setItem(itemSelected)
+        tablero.setCasillaItem(null,fila, columna)
     }
 
-    private fun itemComida(jugadorSacado: Personaje, fila: Int, columna: Int) {
-        //TODO problema con el addItem
-        tablero[fila][columna].item = null
+    private fun itemComida(itemSelected: Item, jugadorSacado: Personaje, fila: Int, columna: Int) {
+        jugadorSacado.setItem(itemSelected)
+        tablero.setCasillaItem(null,fila, columna)
     }
 
     private fun ganadores():Boolean {

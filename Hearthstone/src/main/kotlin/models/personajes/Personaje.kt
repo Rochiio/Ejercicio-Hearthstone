@@ -2,7 +2,6 @@ package models.personajes
 
 import models.Item
 import java.time.LocalDate
-import java.util.Comparator
 import java.util.UUID
 
 abstract class Personaje(open val nombre:String, open var vida:Int ) {
@@ -16,7 +15,7 @@ abstract class Personaje(open val nombre:String, open var vida:Int ) {
         return listaItems.sortedBy { it.fecha }
     }
 
-    open fun addItem(item: Item){
+    open fun setItem(item: Item){
         this.listaItems.add(item)
     }
     abstract fun mostrarEstado():String

@@ -1,6 +1,7 @@
 package models.tablero
 
 import factories.ItemFactory
+import models.Item
 
 class MatrizImpl: Matriz() {
 
@@ -18,7 +19,8 @@ class MatrizImpl: Matriz() {
         return this[fil][col]
     }
 
-    override fun setCasillaNull(fil: Int, col: Int) {
-        this[fil][col].item = null
+    override fun setCasillaItem(itemNew: Item?, fil: Int, col: Int) {
+        this[fil][col].item = itemNew
     }
+
 }
