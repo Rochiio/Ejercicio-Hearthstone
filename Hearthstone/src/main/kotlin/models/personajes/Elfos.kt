@@ -11,11 +11,13 @@ class Elfos(
     val tipo:PersonajeEnum = PersonajeEnum.ELFO
 
     override fun mostrarEstado(): String {
-        return "Estado del Personaje:  ${super.id}\n" +
+        return "------------- \n" +
+                "Estado del Personaje:  ${super.id}\n" +
                 "Nombre: $nombre, Tipo: $tipo, " +
                 "Vida: $vida, Inmortalidad: $inmortalidad \n" +
                 "Fecha Creación: ${super.fechaCreacion}, Nivel: ${super.nivel} \n"+
-                "Lista de items: ${super.listaOrdenada()}"
+                "Lista de items: ${super.listaOrdenada()} \n" +
+                "------------"
     }
 
     override fun setItem(item: Item) {

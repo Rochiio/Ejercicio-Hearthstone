@@ -12,11 +12,13 @@ class Humanos(
     val caballo: Boolean = ((1..100).random())>50
 
     override fun mostrarEstado(): String {
-        return "Estado del Personaje:  ${super.id}\n" +
+        return "--------------\n" +
+                "Estado del Personaje:  ${super.id}\n" +
                 "Nombre: $nombre, Tipo: $tipo, " +
                 "Vida: $vida, Escudo: $escudo, Caballo: $caballo \n" +
                 "Fecha Creación: ${super.fechaCreacion}, Nivel: ${super.nivel} \n"+
-                "Lista de items: ${super.listaOrdenada()}"
+                "Lista de items: ${super.listaOrdenada()} \n" +
+                "-------------"
     }
 
     override fun setItem(item: Item) {

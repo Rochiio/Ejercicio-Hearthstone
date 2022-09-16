@@ -11,11 +11,13 @@ class Trasgos(
     val tipo: PersonajeEnum = PersonajeEnum.TRASGO
 
     override fun mostrarEstado(): String {
-        return "Estado del Personaje:  ${super.id}\n" +
+        return "------------\n" +
+                "Estado del Personaje:  ${super.id}\n" +
                 "Nombre: $nombre, Tipo: $tipo, " +
                 "Vida: $vida, Maldad: $maldad \n" +
                 "Fecha Creación: ${super.fechaCreacion}, Nivel: ${super.nivel} \n"+
-                "Lista de items: ${super.listaOrdenada()}"
+                "Lista de items: ${super.listaOrdenada()} \n" +
+                "------------"
     }
 
     override fun setItem(item: Item) {

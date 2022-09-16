@@ -45,21 +45,20 @@ class Juego(private var tablero:Matriz) {
         informe()
     }
 
+    /**
+     * TODO hace cosas raras
+     */
     private fun informe() {
-       val listaCaballeros = caballerosDeElrond.sortedBy { listaItems.size }
-  //      println(caballerosDeElrond[0].mostrarEstado())
-//        println(lista[0].mostrarEstado())
-
-        println("Informe de resultados: \n" +
-                "Equipo Caballeros de Elrond: \n" +
-                "${listaCaballeros.forEach { a ->  a.mostrarEstado()} } \n" )
+       val listaCaballeros = caballerosDeElrond.sortedByDescending { it.listaItems.size}
+       val listaAmazonas = amazonasDeIsengard.sortedByDescending { it.listaItems.size }
 
 
-//        println("Informe de resultados: \n" +
-//                "Equipo Caballeros de Elrond: \n" +
-//                "${listaCaballeros.forEach { a -> println( a.mostrarEstado()) }} \n" +
-//                "Equipo Amazonas de Isengard: \n" +
-//                "${amazonasDeIsengard.sortedBy { it.listaItems.size }} \n")
+        println("Informe de resultados:\n" +
+                "Equipo Caballeros de Elrond:")
+        listaCaballeros.forEach { a ->  println(a.mostrarEstado())}
+        println("\nEquipo Amazonas de Isengard:")
+        listaAmazonas.forEach { a -> println(a.mostrarEstado()) }
+
     }
 
 
