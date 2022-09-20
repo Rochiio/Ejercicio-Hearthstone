@@ -1,7 +1,7 @@
 package tda.cola
 
-abstract class ICola<T>(initialCapacity: Int) : ArrayList<T>(initialCapacity) {
-    abstract fun encolar(dato:T)
-    abstract fun desencolar():T
+interface ICola<T> {
+     fun encolar(dato:T)
+     fun desencolar():T
 
 }

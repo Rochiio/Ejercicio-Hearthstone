@@ -3,6 +3,9 @@ package factories
 import models.Item
 import models.enums.ItemsEnum
 
+/**
+ * Creación de items aleatorios
+ */
 object ItemFactory {
 
     fun itemFactory():Item{

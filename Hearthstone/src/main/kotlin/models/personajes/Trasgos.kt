@@ -1,8 +1,10 @@
 package models.personajes
 
-import models.Item
 import models.enums.PersonajeEnum
 
+/**
+ * Tipo de personaje: Trasgo
+ */
 class Trasgos(
     override val nombre:String="",
     override var vida:Int = 40
@@ -20,7 +22,4 @@ class Trasgos(
                 "------------"
     }
 
-    override fun setItem(item: Item) {
-        super.setItem(item)
-    }
 }

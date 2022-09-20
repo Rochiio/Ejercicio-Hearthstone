@@ -1,6 +1,6 @@
 import models.tablero.MatrizImpl
 
 fun main(args: Array<String>) {
-    var game = Juego(MatrizImpl())
+    val game = Juego(MatrizImpl())
     game.play()
 }

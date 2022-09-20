@@ -4,6 +4,9 @@ import models.enums.ItemsEnum
 import java.time.LocalDate
 import java.util.UUID
 
+/**
+ * Items
+ */
 data class Item (val tipo: ItemsEnum){
     val id:UUID = UUID.randomUUID()
     val fecha: LocalDate = LocalDate.now()

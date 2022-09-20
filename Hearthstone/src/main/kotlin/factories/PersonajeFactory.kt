@@ -1,12 +1,13 @@
 package factories
 
-import models.Item
-import models.enums.ItemsEnum
 import models.personajes.Elfos
 import models.personajes.Humanos
 import models.personajes.Personaje
 import models.personajes.Trasgos
 
+/**
+ * Creación de personajes aleatorio.
+ */
 object PersonajeFactory {
     private val nombresElfo = listOf("Abraahham Alcolädorl", "Róbertörl Pávonnerl" ,"Bëatrisz Sánchëzrl")
     private val nombresHumano = listOf("Gemarr de Torricond", "Kevyn Valdeswyn" , "Víctoref Fernándezred")

@@ -7,18 +7,16 @@ import models.personajes.Humanos
 import models.personajes.Personaje
 import models.personajes.Trasgos
 import models.tablero.Matriz
-import tda.cola.Cola
 import tda.cola.ColaImpl
-import tda.pila.Pila
 import tda.pila.PilaImpl
 import utils.Input
 
 class Juego(private var tablero:Matriz) {
     private var tiempo:Int
     private val tamTablero:Int
-    private var caballerosDeElrond: Cola = ColaImpl()
-    private var amazonasDeIsengard: Cola = ColaImpl()
-    private var listaItems: Pila = PilaImpl()
+    private var caballerosDeElrond: ColaImpl = ColaImpl()
+    private var amazonasDeIsengard: ColaImpl = ColaImpl()
+    private var listaItems: PilaImpl = PilaImpl()
 
 
     /**
@@ -33,6 +31,9 @@ class Juego(private var tablero:Matriz) {
     }
 
 
+    /**
+     * Función principal para saber hasta cuándo debe seguir el juego.
+     */
     fun play(){
         do {
             turnoCaballeros()
@@ -45,8 +46,9 @@ class Juego(private var tablero:Matriz) {
         informe()
     }
 
+
     /**
-     * TODO hace cosas raras
+     * Informe de las batallas.
      */
     private fun informe() {
        val listaCaballeros = caballerosDeElrond.sortedByDescending { it.listaItems.size}
@@ -54,14 +56,17 @@ class Juego(private var tablero:Matriz) {
 
 
         println("Informe de resultados:\n" +
-                "Equipo Caballeros de Elrond:")
+                "\nEquipo Caballeros de Elrond🧙🏻‍:")
         listaCaballeros.forEach { a ->  println(a.mostrarEstado())}
-        println("\nEquipo Amazonas de Isengard:")
+        println("\nEquipo Amazonas de Isengard🧝🏻‍:")
         listaAmazonas.forEach { a -> println(a.mostrarEstado()) }
 
     }
 
 
+    /**
+     * Reponer el tablero de items donde se haya quedado vacío
+     */
     private fun reponer() {
         for (i in 0 until tamTablero){
             for (j in 0 until tamTablero){
@@ -70,6 +75,10 @@ class Juego(private var tablero:Matriz) {
         }
     }
 
+
+    /**
+     * Acciones a realizar por las amazonas en su turno
+     */
     private fun turnoAmazonas() {
         val jugadorSacado= amazonasDeIsengard.desencolar()
         val fila = (0 until tamTablero).random()
@@ -79,6 +88,10 @@ class Juego(private var tablero:Matriz) {
         amazonasDeIsengard.encolar(jugadorSacado)
     }
 
+
+    /**
+     * Acciones a realizar por los caballeros en su turno
+     */
     private fun turnoCaballeros() {
         val jugadorSacado= caballerosDeElrond.desencolar()
         val fila = (0 until tamTablero).random()
@@ -88,6 +101,10 @@ class Juego(private var tablero:Matriz) {
         caballerosDeElrond.encolar(jugadorSacado)
     }
 
+
+    /**
+     * Para saber si el personaje está destinado a recoger el item encontrado.
+     */
     private fun destinado(jugadorSacado: Personaje, itemSelected: Item, fila: Int, columna: Int) {
         when{
             itemSelected.tipo==ItemsEnum.COMIDA -> itemComida(itemSelected,jugadorSacado, fila, columna)
@@ -97,29 +114,49 @@ class Juego(private var tablero:Matriz) {
         }
     }
 
+
+    /**
+     * Acciones si ha sido destiando el personaje y es el item de hechizo
+     */
     private fun itemHechizo(itemSelected: Item,hechizero: Elfos, fila: Int, columna: Int) {
         hechizero.inmortalidad += 7
         hechizero.setItem(itemSelected)
         tablero.setCasillaItem(null,fila, columna)
     }
 
+
+    /**
+     * Acciones si ha sido destiando el personaje y es el item de pocion
+     */
     private fun itemPocion(itemSelected: Item,trasgo: Trasgos, fila: Int, columna: Int) {
         trasgo.maldad += 2
         trasgo.setItem(itemSelected)
         tablero.setCasillaItem(null,fila, columna)
     }
 
+
+    /**
+     * Acciones si ha sido destiando el personaje y es el item de material
+     */
     private fun itemMaterial(itemSelected: Item,humano: Humanos, fila: Int, columna: Int) {
         humano.escudo += 5
         humano.setItem(itemSelected)
         tablero.setCasillaItem(null,fila, columna)
     }
 
+
+    /**
+     * Acciones si ha sido destiando el personaje y es el item de comida
+     */
     private fun itemComida(itemSelected: Item, jugadorSacado: Personaje, fila: Int, columna: Int) {
         jugadorSacado.setItem(itemSelected)
         tablero.setCasillaItem(null,fila, columna)
     }
 
+
+    /**
+     * Saber si ha ganado algún equipo.
+     */
     private fun ganadores():Boolean {
         when{
             caballerosDeElrond.todoACinco() -> return true
@@ -129,18 +166,23 @@ class Juego(private var tablero:Matriz) {
     }
 
 
-
-
+    /**
+     * Añadir items a su cola.
+     */
     private fun addItems() {
         repeat(200){
             listaItems.add(ItemFactory.itemFactory())
         }
     }
 
+
+    /**
+     * Añadir los personajes a su cola.
+     */
     private fun addPersonajes() {
         repeat(3){
-            caballerosDeElrond.add(PersonajeFactory.personajeFactory())
-            amazonasDeIsengard.add(PersonajeFactory.personajeFactory())
+            caballerosDeElrond.encolar(PersonajeFactory.personajeFactory())
+            amazonasDeIsengard.encolar(PersonajeFactory.personajeFactory())
         }
     }
 
@@ -148,16 +190,21 @@ class Juego(private var tablero:Matriz) {
     /**
      * Función de extensión para saber si todos los integrantes de la batalla tienen sus items a 5 o más
      */
-    private fun Cola.todoACinco():Boolean{
-        var correcto:Int = 0
-
-        for (i in this){
+    private fun ColaImpl.todoACinco(): Boolean {
+        var correcto = 0
+        for (i:Personaje in this){
             if (i.listaItems.size>=5){
                 correcto++
             }
         }
         return correcto == 3
+
     }
 
 
 }
+
+
+
+
+
